@@ -1,7 +1,7 @@
-import React from "react";
 import './index.less'
 import Child  from "./Child";
 import { promise } from "./utils";
+
 
 const App = () => {
   const [count, setCount] = React.useState(0)

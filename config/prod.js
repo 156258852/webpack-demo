@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 require("dotenv").config(); // Load environment variables from .env file
 
 module.exports = {
@@ -78,7 +79,6 @@ module.exports = {
           },
         ],
       },
-      {},
     ],
   },
 
@@ -94,6 +94,20 @@ module.exports = {
         viewport: "width=device-width",
       },
       template: "./src/index.html",
+    }),
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: "react",
+          entry: "https://unpkg.com/react@18/umd/react.development.js",
+          global: "React",
+        },
+        {
+          module: "react-dom",
+          entry: "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
+          global: "ReactDOM",
+        },
+      ],
     }),
   ],
 

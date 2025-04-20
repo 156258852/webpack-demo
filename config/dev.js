@@ -116,6 +116,14 @@ module.exports = async () => {
       open: true, // 启动后自动打开浏览器
       hot: true, // 启用热模块替换
     },
+    cache: {
+      type: "filesystem", // 使用文件系统缓存
+      buildDependencies: {
+        config: [__filename], // 当配置文件发生变化时，缓存失效
+      },
+      cacheDirectory: path.resolve(__dirname, "../node_modules/.cache"), // 缓存目录
+      name: "dev", // 缓存名称
+    },
 
     //如果是组件，可以使用 externals 来排除 react 和 react-dom 这两个库，避免打包到 bundle 中
     // 这样做的好处是可以减少 bundle 的体积，提高加载速度
