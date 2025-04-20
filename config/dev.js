@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 require("dotenv").config(); // Load environment variables from .env file
 const ReactRefreshPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 
 const port = process.env.PORT || 9000;
 
@@ -22,7 +23,7 @@ module.exports = {
       "@": path.resolve(__dirname, "src"), // 设置别名
     },
   },
-  devtool: "eval-source-map",
+  devtool: "eval-cheap-module-source-map", // 开发模式下使用 source map，方便调试
 
   module: {
     rules: [
@@ -90,6 +91,20 @@ module.exports = {
       },
       template: "./src/index.html",
     }),
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: "react",
+          entry: "https://unpkg.com/react@18/umd/react.development.js",
+          global: "React",
+        },
+        {
+          module: "react-dom",
+          entry: "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
+          global: "ReactDOM",
+        },
+      ],
+    }),
   ],
   devServer: {
     static: path.join(__dirname, "./dist"), // 静态文件目录
@@ -98,4 +113,13 @@ module.exports = {
     open: true, // 启动后自动打开浏览器
     hot: true, // 启用热模块替换
   },
+
+  //如果是组件，可以使用 externals 来排除 react 和 react-dom 这两个库，避免打包到 bundle 中
+  // 这样做的好处是可以减少 bundle 的体积，提高加载速度
+  //还需要 peerDependencies 来声明 react 和 react-dom 是外部依赖
+  //现在是使用了cdn 来引入 react 和 react-dom，所以不需要在这里配置 externals
+  // externals: {
+  //   react: "React", // React 作为外部依赖，不打包到 bundle 中
+  //   "react-dom": "ReactDOM", // ReactDOM 作为外部依赖，不打包到 bundle 中
+  // },
 };

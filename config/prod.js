@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require("dotenv").config(); // Load environment variables from .env file
 
 module.exports = {
@@ -38,7 +39,8 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader",
+            // loader: "style-loader",
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: "css-loader",
@@ -50,7 +52,8 @@ module.exports = {
         test: /\.(scss|sass)$/,
         use: [
           {
-            loader: "style-loader",
+            // loader: "style-loader",
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: "css-loader",
@@ -64,7 +67,8 @@ module.exports = {
         test: /\.(less)$/,
         use: [
           {
-            loader: "style-loader",
+            // loader: "style-loader",
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: "css-loader",
@@ -74,10 +78,15 @@ module.exports = {
           },
         ],
       },
+      {},
     ],
   },
 
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+      chunkFilename: "[id].[contenthash].css",
+    }), // 提取 CSS 文件
     // 用于生成 index.html
     new HtmlWebpackPlugin({
       title: "react-webpack-learn",
@@ -92,13 +101,20 @@ module.exports = {
     splitChunks: {
       chunks: "all",
       // 对于 node_modules 中的文件进行分离
-      minSize: 0,
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: "vendors",
           chunks: "all",
           priority: -10, // 设置优先级，确保优先分离 node_modules
+          filename: "[name].[contenthash].js",
+          minSize: 0,
+          minChunks: 1,
+        },
+        default: {
+          name: "common",
+          chunks: "all",
+          priority: -20, // 设置优先级，确保优先分离公共代码
           filename: "[name].[contenthash].js",
           minSize: 0,
           minChunks: 1,
