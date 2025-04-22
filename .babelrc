@@ -14,7 +14,7 @@
           // "browsers": "> 5%", //支持市场份额超过5%的浏览器
           "node": "current" //如果通过Babel编译Node.js代码的话，可以设置 "target.node" 是 'current', 含义是 支持的是当前运行版本的nodejs。
         },
-        "useBuiltIns": "usage", // 做@babel/polyfill补充时，按需补充，用到什么才补充什么,例:只转换用到的es6语法.
+        "useBuiltIns": "entry", // 使用core-js的方式 "usage" 表示根据配置的浏览器兼容，动态按需添加polyfill
         "corejs": "3" //声明corejs版本
       }
     ],
@@ -24,11 +24,7 @@
     [
       "@babel/plugin-transform-runtime",
       {
-        "absoluteRuntime": false, // 如果使用absoluteRuntime: false，那么@babel/runtime的安装路径是相对的，即相对于babel-plugin-transform-runtime的安装路径。
         "corejs": 3, //声明corejs版本
-        "helpers": true, //是否启用辅助函数
-        "regenerator": true, //是否启用regenerator
-        "version": "^7.27.0" //指定@babel/runtime的版本号
       }
     ]
   ],

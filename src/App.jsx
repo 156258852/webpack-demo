@@ -18,6 +18,8 @@ React.useEffect(() => {
         setCount(count + 1)
       }}>Click</button>
      count: {count}
+     {/* {杀杀杀} */}
+     {/* 222333ssss1111是是是 */}
      <Child/>
     </div>
   );

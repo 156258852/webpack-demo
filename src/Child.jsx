@@ -1,4 +1,4 @@
-import { promise } from "./utils";
+import { promise } from "src/utils";
 const Child = () => {
   React.useEffect(() => {
     promise()

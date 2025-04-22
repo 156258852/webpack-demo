@@ -22,6 +22,18 @@ const findAvailablePort = (startPort) => {
   });
 };
 
+const extensions = [
+  ".jsx",
+  ".tsx",
+  ".ts",
+  ".scss",
+  ".less",
+  ".css",
+  ".sass",
+  "...",
+]; // 解析文件的后缀名，... 表示 js、json 等后缀名
+
 module.exports = {
   findAvailablePort,
+  extensions,
 };
