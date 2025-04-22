@@ -27,12 +27,5 @@
         "corejs": 3, //声明corejs版本
       }
     ]
-  ],
-  "env": {
-    "development": {
-      "plugins": [
-        "react-refresh/babel"
-      ]
-    }
-  }
+  ]
 }

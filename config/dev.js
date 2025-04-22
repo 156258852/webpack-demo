@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 require("dotenv").config(); // Load environment variables from .env file
-const ReactRefreshPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 const { findAvailablePort, extensions } = require("./utils");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -125,7 +124,6 @@ module.exports = async () => {
           },
         ],
       }),
-      new ReactRefreshPlugin(), // 热更新插件
     ],
     devServer: {
       static: path.join(__dirname, "./dist"), // 静态文件目录
