@@ -34,7 +34,10 @@ module.exports = async () => {
           test: /\.jsx?$/,
           use: [
             {
-              loader: "babel-loader",
+              loader: "babel-loader?cacheDirectory", //
+              options: {
+                cacheDirectory: true, // 开启 babel 缓存
+              },
             },
           ],
         },

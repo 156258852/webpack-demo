@@ -6,7 +6,6 @@ import { promise } from "./utils";
 const App = () => {
   const [count, setCount] = React.useState(0)
 
-
 React.useEffect(() => {
   promise()
 })
@@ -19,7 +18,7 @@ React.useEffect(() => {
       }}>Click</button>
      count: {count}
      {/* {杀杀杀} */}
-     222333ssss1111飒飒
+     222333ssss11112ss22
      <Child/>
     </div>
   );
