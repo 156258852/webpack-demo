@@ -8,8 +8,9 @@ let port = Number(process.env.PORT) || 9000;
 module.exports = async () => {
   port = await findAvailablePort(port);
   const cwd = process.cwd();
+  const isProd = process.env.NODE_ENV === "production";
   return {
-    mode: "development",
+    mode: process.env.NODE_ENV || "development",
     // 入口文件，webpack 会从这个文件开始打包
     entry: "./src/main.js",
     output: {
@@ -25,7 +26,7 @@ module.exports = async () => {
         src: path.join(cwd, "src"), // 设置别名
       },
     },
-    devtool: "eval-cheap-module-source-map", // 开发模式下使用 source map，方便调试
+    devtool: isProd ? false : "eval-cheap-module-source-map",
 
     module: {
       rules: [
@@ -83,23 +84,23 @@ module.exports = async () => {
             },
           ],
         },
-        // {
-        //   test: /\.json5$/,
-        //   use: [
-        //     {
-        //       loader: "json5-loader",
-        //     },
-        //   ],
-        // },
-        // {
-        //   test: /\.svg$/,
-        //   exclude: [/node_modules/, /styles?/],
-        //   use: [
-        //     {
-        //       loader: "svg-react-loader",
-        //     },
-        //   ],
-        // },
+        {
+          test: /\.json5$/,
+          use: [
+            {
+              loader: "json5-loader",
+            },
+          ],
+        },
+        {
+          test: /\.svg$/,
+          exclude: [/node_modules/, /styles?/],
+          use: [
+            {
+              loader: "svg-react-loader",
+            },
+          ],
+        },
       ],
     },
 
@@ -129,7 +130,7 @@ module.exports = async () => {
       }),
     ],
     devServer: {
-      static: path.join(__dirname, "./dist"), // 静态文件目录
+      static: path.join(cwd, "public"), // 静态文件目录
       compress: true, // 启用 gzip 压缩
       port, // 端口号
       open: true, // 启动后自动打开浏览器

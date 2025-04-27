@@ -2,6 +2,7 @@ module.exports = (babel) => {
   const { types: t } = babel;
 
   return {
+    name: 'remove-console-log',
     visitor: {
       // 检查 CallExpression 而不是 Identifier
       CallExpression(path) {

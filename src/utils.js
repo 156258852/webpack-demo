@@ -1,7 +1,5 @@
-export const promise = async () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Hello World");
-    }, 1000);
-  });
-};
+export const promise = async () => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Hello World");
+  }, 1000);
+});

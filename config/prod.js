@@ -41,7 +41,7 @@ module.exports = {
         use: [
           {
             // loader: "style-loader",
-            loader: MiniCssExtractPlugin.loader,
+            loader: MiniCssExtractPlugin.loader, // 将 CSS 提取到单独的文件中
           },
           {
             loader: "css-loader",
