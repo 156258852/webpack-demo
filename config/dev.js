@@ -2,8 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 require("dotenv").config(); // Load environment variables from .env file
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
-const { findAvailablePort, extensions } = require("./utils");
 const TerserPlugin = require("terser-webpack-plugin");
+const { findAvailablePort, extensions } = require("./utils");
 let port = Number(process.env.PORT) || 9000;
 module.exports = async () => {
   port = await findAvailablePort(port);

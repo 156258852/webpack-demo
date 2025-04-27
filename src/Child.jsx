@@ -9,7 +9,7 @@ const Child = () => {
       console.log("a");
     }
     a() {
-      console.log('a');
+  
     }
   }
 

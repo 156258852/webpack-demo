@@ -17,13 +17,18 @@ module.exports = {
   },
   env: {
     jest: true, 
-    browser: true,
-    commonjs: true,
-    es6: true,
+    browser: true, // 是否支持浏览器环境
+    commonjs: true, // 是否支持 commonjs
+    es6: true, // 是否支持 es6
   },
   globals: { // 全局变量,使用不会报错
     ReactDOM: true,
     React: true,
+    process: true,
+    module: true,
+    __dirname: true,
+    __filename: true,
+
   },
   plugins: [
     'react',
@@ -83,5 +88,6 @@ module.exports = {
     'no-restricted-globals': 2, // 不要直接使用 global 的东西
     'require-atomic-updates': 0, // 不允许异步更新
     'no-nested-ternary': 0, // 不允许嵌套三元运算
-  }
+  },
+  // ignorePatterns: ['config/**/*.js']
 };
