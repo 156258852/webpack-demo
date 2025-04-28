@@ -8,12 +8,12 @@ const Child = () => {
     constructor() {
       console.log("a");
     }
-    a() {
+    a () {
   
     }
   }
 
-  return <div>
+  return <div>222
   </div>;
 };
 
