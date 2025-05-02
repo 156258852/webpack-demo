@@ -1,7 +1,6 @@
 import "./index.less";
+import React from "react";
 import Child from "./Child";
-import { promise } from "./utils";
-
 const App = () => {
   const [count, setCount] = React.useState(0);
 
@@ -13,10 +12,11 @@ const App = () => {
         setCount(count + 1);
       } }
       >
-        Click
+        Clicks 
       </button>
-      count: {count}
+      count: { count }
       <Child />
+      <div>22</div>
     </div>
   );
 };

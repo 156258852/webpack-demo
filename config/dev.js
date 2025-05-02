@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 require("dotenv").config(); // Load environment variables from .env file
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { findAvailablePort, extensions } = require("./utils");
 let port = Number(process.env.PORT) || 9000;
 module.exports = async () => {
@@ -113,28 +114,34 @@ module.exports = async () => {
         },
         template: "./src/index.html",
       }),
-      new HtmlWebpackExternalsPlugin({
-        externals: [
-          {
-            module: "react",
-            entry: "https://unpkg.com/react@18/umd/react.development.js",
-            global: "React",
-          },
-          {
-            module: "react-dom",
-            entry:
-              "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
-            global: "ReactDOM",
-          },
-        ],
-      }),
-    ],
+      //生产引用外部的 js 库
+      isProd &&
+        new HtmlWebpackExternalsPlugin({
+          externals: [
+            {
+              module: "react",
+              entry: "https://unpkg.com/react@18/umd/react.development.js",
+              global: "React",
+            },
+            {
+              module: "react-dom",
+              entry:
+                "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
+              global: "ReactDOM",
+            },
+          ],
+        }),
+      !isProd && new ReactRefreshWebpackPlugin(),
+    ].filter(Boolean),
     devServer: {
       static: path.join(cwd, "public"), // 静态文件目录
       compress: true, // 启用 gzip 压缩
       port, // 端口号
       open: true, // 启动后自动打开浏览器
       hot: true, // 启用热模块替换
+      client: {
+        logging: "error", // 关闭所有日志输出
+      },
     },
     cache: {
       type: "filesystem", // 使用文件系统缓存
@@ -148,6 +155,31 @@ module.exports = async () => {
       ignored: /node_modules/, // 忽略 node_modules 目录
       aggregateTimeout: 300, // 文件变更后的聚合超时时间
       poll: 1000, // 文件变更轮询间隔
+    },
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+        // 对于 node_modules 中的文件进行分离
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all",
+            priority: -10, // 设置优先级，确保优先分离 node_modules
+            filename: "[name].[contenthash].js",
+            minSize: 0,
+            minChunks: 1,
+          },
+          default: {
+            name: "common",
+            chunks: "all",
+            priority: -20, // 设置优先级，确保优先分离公共代码
+            filename: "[name].[contenthash].js",
+            minSize: 0,
+            minChunks: 1,
+          },
+        },
+      },
     },
   };
 };
