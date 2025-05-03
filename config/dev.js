@@ -105,6 +105,11 @@ module.exports = async () => {
           ],
         },
         {
+          test: /\.svg$/,
+          include: [/node_modules/, /styles?/],
+          type: "asset",
+        },
+        {
           test: /\.(png|jpg|gif|jpeg)$/i, //匹配所有的图片文件
           type: "asset",
           parser: {
