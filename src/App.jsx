@@ -6,27 +6,24 @@ import Child from "./Child";
 
 
 const App = () => {
-  const [count, setCount] = React.useState(0);
+
+  const workerRef = React.useRef();
+
   React.useEffect(() => {
-    const url = URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' }));
-    const worker = new Worker(url);
-    worker.postMessage('Hello');
-    worker.onmessage = function (e) {
+    workerRef.current = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' })));
+    workerRef.current.postMessage('Hello');
+    workerRef.current.onmessage = function (e) {
       console.log(e.data); // 输出: Hello from worker: Hello
+    };
+    return () => {
+      workerRef.current.terminate(); // 释放资源
     };
   }, []);
 
 
   return (
     <div className="content">
-      <button onClick={ (e) => {
-        console.log("🚀 ~ App ~ e:", e);
-        setCount(count + 1);
-      } }
-      >
-        Clicks 
-      </button>
-      count: { count }
+
       <Child />
       <img src={testImgSrc} alt="" />
       <div>22</div>

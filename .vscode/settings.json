@@ -1,12 +1,4 @@
 {
-  "intl.nlsPath": ".cs/message_zh.js",
-  "intl.identifier": [
-    "intl",
-    "intl.html",
-    "intl.date"
-  ],
-  "ydMessage.localFilePath": "src/config/message.json",
-  "ydMessage.preset": false,
   "editor.tabSize": 2,
   "editor.formatOnPaste": false,
   "eslint.enable": true,
@@ -14,7 +6,6 @@
     "javascript",
     "javascriptreact"
   ],
-  "tslint.enable": false,
   "javascript.validate.enable": false,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
@@ -22,7 +13,8 @@
   "emmet.triggerExpansionOnTab": true,
   "editor.snippetSuggestions": "top",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit",
   },
   "files.associations": {
     "*.html": "xml"
