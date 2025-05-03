@@ -4,6 +4,7 @@ require("dotenv").config(); // Load environment variables from .env file
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const WebpackBar = require("webpackbar");
 const { findAvailablePort, extensions } = require("./utils");
 let port = Number(process.env.PORT) || 9000;
 module.exports = async () => {
@@ -34,9 +35,10 @@ module.exports = async () => {
         {
           //对 js和jsx 文件进行编译
           test: /\.jsx?$/,
+          exclude: /node_modules/, //排除 node_modules 目录下的文件
           use: [
             {
-              loader: "babel-loader?cacheDirectory", //
+              loader: "babel-loader",
               options: {
                 cacheDirectory: true, // 开启 babel 缓存
               },
@@ -102,6 +104,27 @@ module.exports = async () => {
             },
           ],
         },
+        {
+          test: /\.(png|jpg|gif|jpeg)$/i, //匹配所有的图片文件
+          type: "asset",
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10 * 1024, // 小于 10kb 的图片会被转为 base64 编码
+            },
+          },
+          generator: {
+            // 输出文件名
+            filename: "images/[name].[hash].[ext]",
+          },
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i, //匹配所有的字体文件
+          type: "asset/resource", //使用资源模块转换字体文件
+          generator: {
+            // 输出文件名
+            filename: "fonts/[name].[hash].[ext]",
+          },
+        },
       ],
     },
 
@@ -114,7 +137,6 @@ module.exports = async () => {
         },
         template: "./src/index.html",
       }),
-      //生产引用外部的 js 库
       isProd &&
         new HtmlWebpackExternalsPlugin({
           externals: [
@@ -132,6 +154,7 @@ module.exports = async () => {
           ],
         }),
       !isProd && new ReactRefreshWebpackPlugin(),
+      new WebpackBar(),
     ].filter(Boolean),
     devServer: {
       static: path.join(cwd, "public"), // 静态文件目录
@@ -174,9 +197,9 @@ module.exports = async () => {
             name: "common",
             chunks: "all",
             priority: -20, // 设置优先级，确保优先分离公共代码
-            filename: "[name].[contenthash].js",
-            minSize: 0,
-            minChunks: 1,
+            filename: "[name].[hash:8].js",
+            minSize: 500 * 1024, // 500kb
+            minChunks: 1, // 最少被引用次数
           },
         },
       },
