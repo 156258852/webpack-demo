@@ -130,6 +130,12 @@ module.exports = async () => {
             filename: "fonts/[name].[hash].[ext]",
           },
         },
+        {
+          test: /\.worker\.(js|ts)$/i,
+          use: [{
+            loader: 'raw-loader',
+          }],
+        }
       ],
     },
 

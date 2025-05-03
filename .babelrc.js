@@ -24,7 +24,7 @@ module.exports = {
         corejs: 3, //声明corejs版本
       },
     ],
-    "./babelPlugins/index.js",
+    // "./babelPlugins/index.js",
   ],
   env: {
     development: {
