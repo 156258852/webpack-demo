@@ -1,13 +1,15 @@
 import "./index.less";
 import React from "react";
-import ss from 'src/images/1.png';
+import testImgSrc from 'src/images/1.png';
 import workerCode from './worker/test.worker';
 import Child from "./Child";
+
+
 const App = () => {
   const [count, setCount] = React.useState(0);
   React.useEffect(() => {
-
-    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' })));
+    const url = URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' }));
+    const worker = new Worker(url);
     worker.postMessage('Hello');
     worker.onmessage = function (e) {
       console.log(e.data); // 输出: Hello from worker: Hello
@@ -26,7 +28,7 @@ const App = () => {
       </button>
       count: { count }
       <Child />
-      <img src={ss} alt="" />
+      <img src={testImgSrc} alt="" />
       <div>22</div>
     </div>
   );
