@@ -17,7 +17,7 @@ module.exports = async () => {
     entry: "./src/main.js",
     output: {
       // 打包后的文件存放的目录
-      path: path.resolve(__dirname, "./dist"),
+      path: path.resolve(cwd, "build"),
       // 打包后的文件名
       filename: "bundle.[contenthash].js",
       clean: true, // 清除上次打包的文件
@@ -148,24 +148,43 @@ module.exports = async () => {
         },
         template: "./src/index.html",
       }),
-      isProd &&
-        new HtmlWebpackExternalsPlugin({
-          externals: [
-            {
-              module: "react",
-              entry: "https://unpkg.com/react@18/umd/react.development.js",
-              global: "React",
-            },
-            {
-              module: "react-dom",
-              entry:
-                "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
-              global: "ReactDOM",
-            },
-          ],
-        }),
+      // isProd &&
+      //   new HtmlWebpackExternalsPlugin({
+      //     externals: [
+      //       {
+      //         module: "react",
+      //         entry: "https://unpkg.com/react@18/umd/react.development.js",
+      //         global: "React",
+      //       },
+      //       {
+      //         module: "react-dom",
+      //         entry:
+      //           "https://unpkg.com/react-dom@18/umd/react-dom.development.js",
+      //         global: "ReactDOM",
+      //       },
+      //     ],
+      //   }),
       !isProd && new ReactRefreshWebpackPlugin(),
-      new WebpackBar(),
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          compress: {
+            pure_funcs: [
+              'console.log',
+              'console.info',
+              'console.debug',
+              'console.warn',
+            ],
+          },
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+      new WebpackBar({
+        name: isProd ? 'build' : 'webpack'
+      }),
     ].filter(Boolean),
     devServer: {
       static: path.join(cwd, "public"), // 静态文件目录
