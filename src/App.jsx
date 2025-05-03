@@ -4,7 +4,6 @@ import testImgSrc from 'src/images/1.png';
 import workerCode from './worker/test.worker';
 import Child from "./Child";
 
-
 const App = () => {
 
   const workerRef = React.useRef();

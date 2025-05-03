@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production  webpack --config ./config/prod.js",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:css": "stylelint src/**/*.{css,scss,sass,less} --fix",
-    "lint:all": "npm run lint:js && npm run lint:css"
+    "lint:all": "npm run lint:js && npm run lint:css",
+    "lint:staged": "lint-staged"
   },
   "author": "",
   "license": "ISC",
@@ -55,22 +56,15 @@
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.2",
     "webpackbar": "^7.0.0",
-    "husky": "^9.1.7",
+    "husky": "^8.0.0",
     "lint-staged": "^15.5.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-   "lint-staged": {
+  "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.{css,scss,sass,less}": [
-      "stylelint --fix",
-      "git add"
+      "stylelint --fix"
     ]
   }
 }
