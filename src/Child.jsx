@@ -1,14 +1,27 @@
-import React from "react";
-import { promise } from "src/utils";
+import { usePoll } from "lhy-map-hooks";
+import React, { useState } from "react";
 const Child = () => {
-  React.useEffect(() => {
-    // promise();
-  });
+  const [random, setRandom] = useState(Math.floor(Math.random() * 1000));
+  const service = async () => {
+    Promise.resolve().then(() => {
+      setRandom(Math.floor(Math.random() * 1000));
+    });
+  };
+  const [time, setTime] = useState(1000);
 
+  usePoll(service, {
+    refreshInterval: time,
+  });
 
   return (
     <div>
-      child 22
+      <button type="button" onClick={() => {
+        setTime(undefined);
+      }}
+      >
+        停止
+      </button>
+      random:{random}
     </div>
   );
 };

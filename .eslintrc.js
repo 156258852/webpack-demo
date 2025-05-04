@@ -99,6 +99,10 @@ module.exports = {
     "require-atomic-updates": 0, // 不允许异步更新
     "no-nested-ternary": 0, // 不允许嵌套三元运算
     "no-multi-spaces": 2, // 不允许多个空格
+    "object-curly-spacing": ["error", "always"], // 对象大括号前后要有空格
+    "comma-spacing": ["error", { before: false, after: true }],
+    "key-spacing": ["error", { afterColon: true }], // 对象key后面要有空格
+    "space-in-parens": ["error", "never"], // 括号内不允许有空格
   },
   // ignorePatterns: ['config/**/*.js']
 };
