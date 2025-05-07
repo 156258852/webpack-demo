@@ -15,7 +15,8 @@ module.exports = {
         corejs: "3", //声明corejs版本
       },
     ],
-    "@babel/preset-react", //转换react JSX
+    "@babel/preset-react", //转换react JSX,
+    "@babel/preset-typescript"
   ],
   plugins: [
     [

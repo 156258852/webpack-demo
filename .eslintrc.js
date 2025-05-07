@@ -14,7 +14,8 @@ module.exports = {
     babelOptions: {
       presets: [
         "@babel/preset-react", // 添加 react preset
-        "@babel/preset-env", //  添加 env preset
+        "@babel/preset-typescript",
+        "@babel/preset-env", //  添加 env preset，
       ],
     },
   },

@@ -1,8 +1,8 @@
-import "./index.less";
 import React from "react";
 import testImgSrc from 'src/images/1.png';
 import workerCode from './worker/test.worker';
 import Child from "./Child";
+import Test from './test';
 
 const App = () => {
 
@@ -24,8 +24,9 @@ const App = () => {
     <div className="content">
 
       <Child />
-      <img src={testImgSrc} alt="" />
-      <div>22</div>
+      {/* <img src={testImgSrc} alt="" /> */}
+      ----
+      <Test/>
     </div>
   );
 };

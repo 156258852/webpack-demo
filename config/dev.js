@@ -34,7 +34,7 @@ module.exports = async () => {
       rules: [
         {
           //对 js和jsx 文件进行编译
-          test: /\.jsx?$/,
+          test: /\.(ts|js)x?$/,
           exclude: /node_modules/, //排除 node_modules 目录下的文件
           use: [
             {
