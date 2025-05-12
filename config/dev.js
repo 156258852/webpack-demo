@@ -132,10 +132,12 @@ module.exports = async () => {
         },
         {
           test: /\.worker\.(js|ts)$/i,
-          use: [{
-            loader: 'raw-loader',
-          }],
-        }
+          use: [
+            {
+              loader: "raw-loader",
+            },
+          ],
+        },
       ],
     },
 
@@ -170,10 +172,10 @@ module.exports = async () => {
         terserOptions: {
           compress: {
             pure_funcs: [
-              'console.log',
-              'console.info',
-              'console.debug',
-              'console.warn',
+              "console.log",
+              "console.info",
+              "console.debug",
+              "console.warn",
             ],
           },
           format: {
@@ -183,7 +185,7 @@ module.exports = async () => {
         extractComments: false,
       }),
       new WebpackBar({
-        name: isProd ? 'build' : 'webpack'
+        name: isProd ? "build" : "webpack",
       }),
     ].filter(Boolean),
     devServer: {
