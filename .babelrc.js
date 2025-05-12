@@ -16,7 +16,8 @@ module.exports = {
         modules: false, //不转换ES6模块语法
       },
     ],
-    "@babel/preset-react", //转换react JSX
+    "@babel/preset-react", //转换react JSX,
+    "@babel/preset-typescript"
   ],
   plugins: [
     [

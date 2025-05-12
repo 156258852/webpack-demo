@@ -34,7 +34,7 @@ module.exports = async () => {
       rules: [
         {
           //对 js和jsx 文件进行编译
-          test: /\.jsx?$/,
+          test: /\.(ts|js)x?$/,
           exclude: /node_modules/, //排除 node_modules 目录下的文件
           use: [
             {
@@ -119,7 +119,7 @@ module.exports = async () => {
           },
           generator: {
             // 输出文件名
-            filename: "images/[name].[hash].[ext]",
+            filename: "images/[name].[hash:8][ext]",
           },
         },
         {
@@ -127,7 +127,7 @@ module.exports = async () => {
           type: "asset/resource", //使用资源模块转换字体文件
           generator: {
             // 输出文件名
-            filename: "fonts/[name].[hash].[ext]",
+            filename: "fonts/[name].[hash:8][ext]",
           },
         },
         {
@@ -167,7 +167,7 @@ module.exports = async () => {
       //     ],
       //   }),
       !isProd && new ReactRefreshWebpackPlugin(),
-      new TerserPlugin({
+      isProd && new TerserPlugin({
         parallel: true,
         terserOptions: {
           compress: {
@@ -229,7 +229,7 @@ module.exports = async () => {
             name: "common",
             chunks: "all",
             priority: -20, // 设置优先级，确保优先分离公共代码
-            filename: "[name].[hash:8].js",
+            filename: "[name].[contenthash].js",
             minSize: 500 * 1024, // 500kb
             minChunks: 1, // 最少被引用次数
           },
