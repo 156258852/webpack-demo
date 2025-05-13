@@ -148,7 +148,7 @@ module.exports = async () => {
         meta: {
           viewport: "width=device-width",
         },
-        template: "./src/index.html",
+        template: path.join(cwd, "index.html"), // 模板文件
       }),
       // isProd &&
       //   new HtmlWebpackExternalsPlugin({
@@ -167,23 +167,24 @@ module.exports = async () => {
       //     ],
       //   }),
       !isProd && new ReactRefreshWebpackPlugin(),
-      isProd && new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: {
-            pure_funcs: [
-              "console.log",
-              "console.info",
-              "console.debug",
-              "console.warn",
-            ],
+      isProd &&
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            compress: {
+              pure_funcs: [
+                "console.log",
+                "console.info",
+                "console.debug",
+                "console.warn",
+              ],
+            },
+            format: {
+              comments: false,
+            },
           },
-          format: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      }),
+          extractComments: false,
+        }),
       new WebpackBar({
         name: isProd ? "build" : "webpack",
       }),
