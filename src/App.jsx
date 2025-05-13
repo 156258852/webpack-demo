@@ -2,7 +2,6 @@ import React from "react";
 import workerCode from './worker/test.worker';
 import Child from "./Child";
 import Test from './test';
-
 const App = () => {
 
   const workerRef = React.useRef();

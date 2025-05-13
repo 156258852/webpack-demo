@@ -10,7 +10,8 @@
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:css": "stylelint src/**/*.{css,scss,sass,less} --fix",
     "lint:all": "npm run lint:js && npm run lint:css",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
