@@ -11,7 +11,7 @@ module.exports = {
           // "browsers": "> 5%", //支持市场份额超过5%的浏览器
           node: "current", //如果通过Babel编译Node.js代码的话，可以设置 "target.node" 是 'current', 含义是 支持的是当前运行版本的nodejs。
         },
-        useBuiltIns: "usage", // 使用core-js的方式 "usage" 表示根据配置的浏览器兼容，动态按需添加polyfill
+        useBuiltIns: "entry", // 使用core-js的方式 "usage" 表示根据配置的浏览器兼容，动态按需添加polyfill
         corejs: "3", //声明corejs版本
         modules: false, //不转换ES6模块语法
       },
