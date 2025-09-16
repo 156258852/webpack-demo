@@ -5,6 +5,7 @@ const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const WebpackBar = require("webpackbar");
+const DeadCodePlugin = require("webpack-deadcode-plugin");
 const { findAvailablePort, extensions } = require("./utils");
 let port = Number(process.env.PORT) || 9000;
 module.exports = async () => {
@@ -74,7 +75,7 @@ module.exports = async () => {
           ],
         },
         {
-          test: /\.(less)$/,
+          test: /\.less$/,
           use: [
             {
               loader: "style-loader",
@@ -149,6 +150,25 @@ module.exports = async () => {
           viewport: "width=device-width",
         },
         template: path.join(cwd, "index.html"), // 模板文件
+      }),
+      new DeadCodePlugin({
+        patterns: [
+          "src/**/*.(js|jsx|ts|tsx|css|scss|sass|less|png|jpg|gif|jpeg|svg|ttf|woff|woff2|eot|otf)",
+        ],
+        exclude: [
+          "**/node_modules/**",
+          "**/*.test.(js|jsx|ts|tsx)",
+          "**/*.spec.(js|jsx|ts|tsx)",
+          "**/test/**",
+          "**/tests/**",
+          "src/reportWebVitals.js", // 排除这个常见的文件
+        ],
+        content: ".", // 扫描的文件目录
+        detectUnusedFiles: true, //是否运行未使用文件检测
+        detectUnusedExport: true, //是否运行未使用导出检测
+        failOnHint: false,
+        log: "all",
+        exportJSON: "./deadcode-analysis",
       }),
       // isProd &&
       //   new HtmlWebpackExternalsPlugin({
