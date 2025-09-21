@@ -1,37 +1,35 @@
 const net = require("net");
-// 检查端口是否被占用并自动递增
+
+/**
+ * 端口工具模块
+ * 负责端口检测和分配相关功能
+ */
+
+/**
+ * 检查端口是否被占用并自动递增
+ * @param {number} startPort - 起始端口号
+ * @returns {Promise<number>} 可用端口号
+ */
 const findAvailablePort = (startPort) => new Promise((resolve, reject) => {
   const server = net.createServer();
+
   server.listen(startPort, () => {
     const { port } = server.address();
-    // 端口可用时，关闭服务器
     server.close(() => {
       console.log("Port", port, "is closed and available.");
-      // 关闭服务器后，返回可用端口
       resolve(port);
     });
   });
+
   server.on("error", (err) => {
     if (err.code === "EADDRINUSE") {
-      resolve(findAvailablePort(startPort + 1)); // 端口被占用时递增
+      resolve(findAvailablePort(startPort + 1));
     } else {
       reject(err);
     }
   });
 });
 
-const extensions = [
-  ".jsx",
-  ".tsx",
-  ".ts",
-  ".scss",
-  ".less",
-  ".css",
-  ".sass",
-  "...",
-]; // 解析文件的后缀名，... 表示 js、json 等后缀名
-
 module.exports = {
   findAvailablePort,
-  extensions,
 };

@@ -28,16 +28,4 @@ module.exports = {
     ],
     // "./babelPlugins/index.js",
   ],
-  env: {
-    development: {
-      plugins: [
-        [
-          require.resolve("react-refresh/babel"),
-          {
-            overlay: false, // 关闭覆盖
-          },
-        ],
-      ],
-    },
-  },
 };

@@ -1,0 +1,17 @@
+.title {
+  color: #3498db;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.highlight {
+  background-color: yellow;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
