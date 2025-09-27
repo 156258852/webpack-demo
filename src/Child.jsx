@@ -14,7 +14,7 @@ const Child = () => {
   });
 
   return (
-    <div>
+    <div className="dark">
       <button type="button" onClick={() => {
         setTime(undefined);
       }}

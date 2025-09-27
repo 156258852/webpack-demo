@@ -22,8 +22,8 @@ const App = () => {
   return (
     <div className="content">
       <Child />
-      <Test/>
-      <CodeHight text="import React from 'react';" markText=" r"/>
+      <Test />
+      <CodeHight text="import React from 'react';" markText=" r" />
     </div>
   );
 };
