@@ -34,3 +34,14 @@ div {
   }
 
 }
+
+
+.test {
+  color: red
+}
+
+
+button {
+  @extend div;
+  @extend .test;
+}
