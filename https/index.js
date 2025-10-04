@@ -72,7 +72,7 @@ https.interceptors.response.use(
         url: err.config?.url,
         method: err.config?.method,
         timeout: err.config?.timeout,
-        message: '请求超时'
+        message: 'request timeout'
       });
     }
     return Promise.reject(err);
@@ -80,7 +80,7 @@ https.interceptors.response.use(
 );
 
 // ==================== 安全方法白名单 ====================
-const SAFE_METHODS = ['get', 'head', 'options'];
+const SAFE_METHODS = ['get'];
 
 // ==================== 核心封装 ====================
 const httpsProxy = new Proxy(https, {
@@ -88,46 +88,55 @@ const httpsProxy = new Proxy(https, {
     const key = String(prop);
     if (!SAFE_METHODS.includes(key)) return target[key];
 
-    return async (...args) => {
-      const [url, config = {}] = args;
-      const { timeout = 1000, cache, params } = config;
+    return (...args) => 
+      // 包装一层 Promise，主要使用 resolve
+      new Promise((resolve) => {
+        const [url, config = {}] = args;
+        const { timeout = 1000, cache, params } = config;
 
-      if (!cache) { // 无缓存分支，直接请求
-        try {
-          const { data } = await target[key](...args);
-          return { data, status: 'ok' };
-        } catch (err) {
-          console.error(err);
-          return { status: 'error', err };
+        if (!cache) { // 无缓存分支，直接请求
+          target[key](...args)
+            .then(response => resolve({ data: response.data, status: 'ok' }))
+            .catch(err => {
+              console.error(err);
+              resolve({ status: 'error', err });
+            });
+          return;
         }
-      }
 
-      // --- 有缓存分支 ---
-      const cacheKey = utils.generateCacheKey(url, params);
+        // --- 有缓存分支 ---
+        const cacheKey = utils.generateCacheKey(url, params);
 
-      // 命中缓存
-      if (utils._cacheResponseData[cacheKey] !== undefined) {
-        return { data: utils.deepClone(utils._cacheResponseData[cacheKey]), status: 'ok' };
-      }
+        // 命中缓存
+        if (!utils.isUndefined(utils._cacheResponseData[cacheKey])) {
+          resolve({ data: utils.deepClone(utils._cacheResponseData[cacheKey]), status: 'ok' });
+          return;
+        }
 
-      // 复用正在飞的请求
-      if (utils._cacheRequestLoaded[cacheKey]) {
-        return await utils.getCacheDataByKey(cacheKey, timeout, url);
-      }
+        // 复用正在飞的请求
+        if (utils._cacheRequestLoaded[cacheKey]) {
+          utils.getCacheDataByKey(cacheKey, timeout, url)
+            .then(result => resolve(result))
+            .catch(err => resolve({ status: 'error', err }));
+          return;
+        }
 
-      // 首次请求
-      utils._cacheRequestLoaded[cacheKey] = true;
-      try {
-        const { data } = await target[key](...args);
-        utils._cacheResponseData[cacheKey] = data;
-        return { data, status: 'ok' };
-      } catch (err) {
-        console.error(err);
-        return { status: 'error', err };
-      } finally {
-        utils._cacheRequestLoaded[cacheKey] = false; // 无论成功失败都复位
-      } 
-    };
+        // 首次请求
+        utils._cacheRequestLoaded[cacheKey] = true;
+        target[key](...args)
+          .then(response => {
+            utils._cacheResponseData[cacheKey] = response.data;
+            resolve({ data: response.data, status: 'ok' });
+          })
+          .catch(err => {
+            console.error(err);
+            resolve({ status: 'error', err });
+          })
+          .finally(() => {
+            utils._cacheRequestLoaded[cacheKey] = false; // 无论成功失败都复位
+          });
+      })
+    ;
   }
 });
 
