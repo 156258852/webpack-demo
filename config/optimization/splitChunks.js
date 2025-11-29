@@ -16,7 +16,7 @@ const createSplitChunksConfig = () => ({
       name: "vendors",
       chunks: "all",
       priority: -10,
-      filename: "[name].[contenthash].js",
+      filename: "[name].[contenthash:8].js",
       minSize: 0,
       minChunks: 1,
     },
@@ -25,7 +25,7 @@ const createSplitChunksConfig = () => ({
       name: "common",
       chunks: "all",
       priority: -20,
-      filename: "[name].[contenthash].js",
+      filename: "[name].[contenthash:8].js",
       minSize: 500 * 1024, // 500kb
       minChunks: 1,
     },

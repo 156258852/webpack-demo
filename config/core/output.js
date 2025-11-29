@@ -14,7 +14,7 @@ const getOutput = () => {
 
   return {
     path: path.resolve(cwd, "dist"),
-    filename: "bundle.[contenthash].js",
+    filename: "[name].[contenthash:8].js",
     clean: true,
   };
 };
