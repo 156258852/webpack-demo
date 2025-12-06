@@ -12,7 +12,10 @@ module.exports = {
           node: "current", //如果通过Babel编译Node.js代码的话，可以设置 "target.node" 是 'current', 含义是 支持的是当前运行版本的nodejs。
         },
         useBuiltIns: "entry", // 使用core-js的方式 "usage" 表示根据配置的浏览器兼容，动态按需添加polyfill
-        corejs: "3", //声明corejs版本
+        corejs: {
+          version: 3, //声明corejs版本
+          proposals: true, //使用实验特性
+        } 
         modules: false, //不转换ES6模块语法
       },
     ],
