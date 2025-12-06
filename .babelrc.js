@@ -15,7 +15,7 @@ module.exports = {
         corejs: {
           version: 3, //声明corejs版本
           proposals: true, //使用实验特性
-        } 
+        },
         modules: false, //不转换ES6模块语法
       },
     ],
