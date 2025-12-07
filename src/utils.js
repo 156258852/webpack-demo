@@ -1,5 +1,5 @@
-export const promise = async () => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("Hello World");
-  }, 1000);
-});
+const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
+export {
+  delay
+};

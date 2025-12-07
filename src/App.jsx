@@ -1,7 +1,6 @@
 import React from "react";
 import workerCode from './worker/test.worker';
 import Child from "./Child";
-import Test from './test';
 import { CodeHight } from "./Component";
 const App = () => {
 
@@ -22,7 +21,6 @@ const App = () => {
   return (
     <div className="content">
       <Child />
-      <Test />
       <CodeHight text="import React from 'react';" markText=" r" />
     </div>
   );
