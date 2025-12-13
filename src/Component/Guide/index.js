@@ -1,4 +1,4 @@
-import React, { useState, isValidElement } from 'react';
+import React, { useState } from 'react';
 import MaskCom from './MaskCom';
 
 // 判断元素是否在可视区域
@@ -15,9 +15,9 @@ const isElementInView = (el) => {
 
 
 function MaskBtn({ container }) {
-  const dom = typeof container === 'function' ? container() : container;
   const [visible, setVisible] = useState(false);
   const [rect, setRect] = useState({});
+
   const handleScrollEnd = () => {
     if(!dom) return;
     const domInfo = dom.getBoundingClientRect();
@@ -28,6 +28,9 @@ function MaskBtn({ container }) {
       dom.classList.remove('shake-animation');
     }, { once: true });
   };
+
+  const dom = React.useMemo(()=> typeof container === 'function' ? container() : (container?.current || container), [container]);
+  console.log('🚀 >>> dom', dom);
 
   const onClose = React.useCallback(() => {
     setVisible(false);
@@ -47,9 +50,10 @@ function MaskBtn({ container }) {
   };
 
   React.useEffect(() => () => {
+    if(!dom) return;
     window.removeEventListener('scrollend', handleScrollEnd);
     dom?.removeEventListener('click', onClose);
-  }, []);
+  }, [dom]);
 
 
   return (

@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import workerCode from './worker/test.worker';
 import Child from "./Child";
 import { CodeHight } from "./Component";
 import MaskBtn from "./Component/Guide";
+import useMountedState from "./hooks/useMountedState";
 const App = () => {
 
   const workerRef = React.useRef();
   const ref = React.useRef();
+  const isMounted = useMountedState();
+  
 
   React.useEffect(() => {
     workerRef.current = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' })));
@@ -18,23 +21,12 @@ const App = () => {
       workerRef.current.terminate(); // 释放资源
     };
   }, []);
-
   return (
     <div className="content">
-      <MaskBtn container={()=> ref.current}/>
+      {isMounted && <MaskBtn container={ref}/>}
       <Child />
-    
-      <CodeHight text="import React from 'react';" markText=" r" />
-      <div>
-        <CodeHight text="import React from 'react';" markText=" r" />
-      </div>
-      <div>
-        <CodeHight text="import React from 'react';" markText=" r" />
-      </div>
-      <div>
-        <CodeHight text="import React from 'react';" markText=" r" />
-      </div>
       <div ref={ref}>搜索</div>
+      <CodeHight text="import React from 'react';" markText=" r" />
     </div>
   );
 };
