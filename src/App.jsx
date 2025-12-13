@@ -2,9 +2,11 @@ import React from "react";
 import workerCode from './worker/test.worker';
 import Child from "./Child";
 import { CodeHight } from "./Component";
+import MaskBtn from "./Component/Guide";
 const App = () => {
 
   const workerRef = React.useRef();
+  const ref = React.useRef();
 
   React.useEffect(() => {
     workerRef.current = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' })));
@@ -17,11 +19,22 @@ const App = () => {
     };
   }, []);
 
-
   return (
     <div className="content">
+      <MaskBtn container={()=> ref.current}/>
       <Child />
+    
       <CodeHight text="import React from 'react';" markText=" r" />
+      <div>
+        <CodeHight text="import React from 'react';" markText=" r" />
+      </div>
+      <div>
+        <CodeHight text="import React from 'react';" markText=" r" />
+      </div>
+      <div>
+        <CodeHight text="import React from 'react';" markText=" r" />
+      </div>
+      <div ref={ref}>搜索</div>
     </div>
   );
 };

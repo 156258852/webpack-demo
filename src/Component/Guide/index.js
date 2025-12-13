@@ -1,50 +1,63 @@
-import React, { useState } from 'react';
-import { isElementInView } from 'src/utils';
+import React, { useState, isValidElement } from 'react';
 import MaskCom from './MaskCom';
 
-function ApplyCertBtn() {
+// 判断元素是否在可视区域
+const isElementInView = (el) => {
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollBottom = scrollTop + window.innerHeight;
+  const elementTop = el.offsetTop;
+  const elementBottom = elementTop + el.offsetHeight;
+  
+  // 判断元素是否在可视区域内
+  return elementTop < scrollBottom && elementBottom > scrollTop;
+};
+
+
+
+function MaskBtn({ container }) {
+  const dom = typeof container === 'function' ? container() : container;
   const [visible, setVisible] = useState(false);
   const [rect, setRect] = useState({});
-  const applyBtnDom = document.querySelector('[data-tracker="4_1m9mnpi"]');
   const handleScrollEnd = () => {
-    const domInfo = applyBtnDom.getBoundingClientRect();
+    if(!dom) return;
+    const domInfo = dom.getBoundingClientRect();
     setRect(domInfo);
     setVisible(true);
-    applyBtnDom.classList.add('shake-animation');
-    applyBtnDom.addEventListener('animationend', () => {
-      applyBtnDom.classList.remove('shake-animation');
+    dom.classList.add('shake-animation');
+    dom.addEventListener('animationend', () => {
+      dom.classList.remove('shake-animation');
     }, { once: true });
   };
 
   const onClose = React.useCallback(() => {
     setVisible(false);
-    applyBtnDom.removeEventListener('click', onClose);
+    dom?.removeEventListener('click', onClose);
   }, []);
-  const onApply = () => {
-    if (applyBtnDom) {
-      const isInView = isElementInView(applyBtnDom);
+  const onClick = () => {
+    if (dom) {
+      const isInView = isElementInView(dom);
       if (isInView) {
         handleScrollEnd();
       } else {
-        applyBtnDom.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.ROOT_APP_REF_REMARK.addEventListener('scrollend', handleScrollEnd, { once: true });
+        dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        window.addEventListener('scrollend', handleScrollEnd, { once: true });
       }
-      applyBtnDom.addEventListener('click', onClose, { once: true });
+      dom.addEventListener('click', onClose, { once: true });
     }
   };
 
   React.useEffect(() => () => {
-    window.ROOT_APP_REF_REMARK.removeEventListener('scrollend', handleScrollEnd);
-    applyBtnDom?.removeEventListener('click', onClose);
+    window.removeEventListener('scrollend', handleScrollEnd);
+    dom?.removeEventListener('click', onClose);
   }, []);
 
 
   return (
     <span>
-      <UI.Button data-tracker="11_56vsfcuu" text type="primary" onClick={onApply}>{intl('cas.view.apply.title')}</UI.Button>
+      <button onClick={onClick}>遮罩按钮</button>
       {visible && <MaskCom rect={rect} onClose={onClose} setRect={setRect} />}
     </span>
   );
 }
 
-export default UI.withErrorBoundary(false)(ApplyCertBtn);
+export default MaskBtn;

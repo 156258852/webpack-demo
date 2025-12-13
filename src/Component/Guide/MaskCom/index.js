@@ -49,4 +49,4 @@ const MaskCom = ({ onClose, rect = {}, opacity = 0.4 }) => {
   );
 };
 
-export default UI.withErrorBoundary(false)(MaskCom);
+export default MaskCom;

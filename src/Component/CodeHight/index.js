@@ -4,9 +4,7 @@ const HighLight = ({
   text = '',
   markText = '',
 }) => {
-  console.log('text', text);
   const textArr = text.split(markText);
-  // const keywordRender = markText;
 
   return (<>
     {
