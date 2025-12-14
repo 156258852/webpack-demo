@@ -105,5 +105,8 @@ module.exports = {
     "key-spacing": ["error", { afterColon: true }], // 对象key后面要有空格
     "space-in-parens": ["error", "never"], // 括号内不允许有空格
   },
-  // ignorePatterns: ['config/**/*.js']
+  ignorePatterns: [
+    // 'config/**/*.js'
+    "dist**",
+  ]
 };

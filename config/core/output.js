@@ -16,6 +16,7 @@ const getOutput = () => {
     path: path.resolve(cwd, "dist"),
     filename: "[name].[contenthash:8].js",
     clean: true,
+    uniqueName: 'root-container'
   };
 };
 
