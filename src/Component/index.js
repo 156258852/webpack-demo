@@ -1,6 +1,6 @@
-import CodeHight from './CodeHight';
+import Highlight from './Highlight';
 import Guide from './Guide';
 export {
-  CodeHight,
+  Highlight,
   Guide,
 };

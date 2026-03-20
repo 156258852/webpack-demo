@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import workerCode from './worker/test.worker';
 import Child from "./Child";
-import { CodeHight } from "./Component";
+import { Highlight } from "./Component";
 import MaskBtn from "./Component/Guide";
 import useMountedState from "./hooks/useMountedState";
 const App = () => {
@@ -26,7 +26,7 @@ const App = () => {
       {isMounted && <MaskBtn container={ref}/>}
       <Child />
       <div ref={ref}>搜索</div>
-      <CodeHight text="import React from 'react';" markText=" r" />
+      <Highlight text="import React from 'react';" markText=" r" caseSensitive={false} />
     </div>
   );
 };

@@ -29,10 +29,12 @@ npm run build:analyze # Build with bundle analyzer
 ### Linting
 ```bash
 npm run lint:js      # ESLint for JS/TS files
-npm run lint:css     # Stylelint for CSS/SCSS/LESS
+npm run lint:css     # Stylelint for CSS/SCSS/LESS (auto-fixes)
 npm run lint:all     # Run both linters
 npm run lint:staged  # Lint staged files (used by husky)
 ```
+
+Note: No tests are currently configured. `npm test` will exit with an error.
 
 ## Architecture Details
 
@@ -40,18 +42,18 @@ npm run lint:staged  # Lint staged files (used by husky)
 
 The webpack config uses a modular pattern:
 
-1. **`webpack.common.js`** - Base configuration that composes:
+1. **`config/webpack.common.js`** - Base configuration that composes:
    - Core configs (entry, output, resolve) from `config/core/`
    - All module rules from `config/rules/`
    - Common plugins from `config/plugins/`
    - Environment-aware optimization from `config/optimization/`
 
-2. **`webpack.dev.js`** - Development overrides:
+2. **`config/webpack.dev.js`** - Development overrides:
    - Merges with common config using `webpack-merge`
    - Adds dev server, hot reload, filesystem cache
-   - Async function that finds available port
+   - Auto-finds available port if default is busy
 
-3. **`webpack.prod.js`** - Production overrides:
+3. **`config/webpack.prod.js`** - Production overrides:
    - Externals: React and ReactDOM are not bundled (loaded via CDN)
    - Terser minimizer, compressed cache
    - Performance hints for bundle size
@@ -97,3 +99,5 @@ React and ReactDOM are **not** bundled in production builds. The HTML template m
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 ```
+
+The HTML template is at `index.html` and is processed by html-webpack-plugin.
