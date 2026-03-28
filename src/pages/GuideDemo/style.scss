@@ -1,0 +1,63 @@
+.guide-demo {
+  h2 {
+    margin-bottom: 16px;
+    color: #333;
+  }
+
+  .description {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .demo-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .target-elements {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .target-section {
+    h3 {
+      margin-bottom: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  .target-box {
+    padding: 16px 24px;
+    background: #1890ff;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: 500;
+    display: inline-block;
+
+    &.target-1 {
+      background: #1890ff;
+    }
+
+    &.target-2 {
+      background: #52c41a;
+    }
+
+    &.target-3 {
+      background: #722ed1;
+    }
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

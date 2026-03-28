@@ -13,12 +13,11 @@ const isElementInView = (el) => {
 };
 
 
-
 function MaskBtn({ container }) {
   const [visible, setVisible] = useState(false);
   const [rect, setRect] = useState({});
 
-  const handleScrollEnd = () => {
+  const handleScrollEnd = (dom) => {
     if(!dom) return;
     const domInfo = dom.getBoundingClientRect();
     setRect(domInfo);
@@ -29,32 +28,35 @@ function MaskBtn({ container }) {
     }, { once: true });
   };
 
-  const dom = React.useMemo(()=> typeof container === 'function' ? container() : (container?.current || container), [container]);
-  console.log('🚀 >>> dom', dom);
+  const getDom = React.useCallback(() => {
+    return typeof container === 'function' ? container() : (container?.current || container);
+  }, [container]);
 
   const onClose = React.useCallback(() => {
     setVisible(false);
-    dom?.removeEventListener('click', onClose);
-  }, []);
+    getDom()?.removeEventListener('click', onClose);
+  }, [getDom]);
+
   const onClick = () => {
+    const dom = getDom();
     if (dom) {
       const isInView = isElementInView(dom);
       if (isInView) {
-        handleScrollEnd();
+        handleScrollEnd(dom);
       } else {
         dom.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.addEventListener('scrollend', handleScrollEnd, { once: true });
+        window.addEventListener('scrollend', () => handleScrollEnd(dom), { once: true });
       }
       dom.addEventListener('click', onClose, { once: true });
     }
   };
 
   React.useEffect(() => () => {
-    if(!dom) return;
-    window.removeEventListener('scrollend', handleScrollEnd);
-    dom?.removeEventListener('click', onClose);
-  }, [dom]);
-
+    const dom = getDom();
+    if (dom && typeof dom.removeEventListener === 'function') {
+      dom.removeEventListener('click', onClose);
+    }
+  }, [getDom, onClose]);
 
   return (
     <span>

@@ -1,0 +1,67 @@
+.highlight-demo {
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .demo-section {
+    margin-bottom: 20px;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      color: #666;
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      font-size: 14px;
+
+      &:focus {
+        border-color: #1890ff;
+        outline: none;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      font-family: monospace;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+  }
+
+  .result-section {
+    h3 {
+      margin-bottom: 12px;
+      color: #666;
+    }
+
+    .result-box {
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      line-height: 1.6;
+
+      mark {
+        background-color: #ffeb3b;
+        padding: 2px 4px;
+        border-radius: 2px;
+      }
+    }
+  }
+}

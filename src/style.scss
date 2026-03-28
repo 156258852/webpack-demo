@@ -1,47 +1,16 @@
-@mixin red-text {
-  color: red;
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-@mixin customColor ($color : pink) {
-  @if ($color ==orange) {
-    color: skyblue;
-  }
-
-  @else {
-    color: $color;
-  }
+.app-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 24px;
+  font-size: 24px;
 }
 
-// div {
-//   // color: red;
-//   @include red-text;
-//   @include customColor(orange);
-// }
-
-@mixin dark-mode {
-  background-color: black;
-  color: white;
-
-
-  &.dark {
-    @content;
-  }
-}
-
-div {
-  @include dark-mode {
-    border: 1px solid white;
-  }
-
-}
-
-
-.test {
-  color: red
-}
-
-
-button {
-  @extend div;
-  @extend .test;
+.content {
+  padding: 20px;
 }
