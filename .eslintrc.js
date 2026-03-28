@@ -57,7 +57,7 @@ module.exports = {
     // react
     "react/jsx-key": 1, // 循环中需要有key
     "react/jsx-indent": [1, 2], // jsx缩进
-    "react/jsx-indent-props": 2, // jsx属性缩进
+    "react/jsx-indent-props": [2, 2], // jsx属性缩进2空格
     "react/jsx-no-target-blank": 0, // 忽略 target 使用的警告
     "react/jsx-closing-tag-location": 0, // 不要想着标签严格缩进匹配
     "react/jsx-filename-extension": [

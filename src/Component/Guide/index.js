@@ -28,9 +28,7 @@ function MaskBtn({ container }) {
     }, { once: true });
   };
 
-  const getDom = React.useCallback(() => {
-    return typeof container === 'function' ? container() : (container?.current || container);
-  }, [container]);
+  const getDom = React.useCallback(() => typeof container === 'function' ? container() : (container?.current || container), [container]);
 
   const onClose = React.useCallback(() => {
     setVisible(false);
