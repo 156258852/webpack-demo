@@ -5,6 +5,7 @@ import GuideDemo from 'src/pages/GuideDemo';
 import WorkerDemo from 'src/pages/WorkerDemo';
 import PollDemo from 'src/pages/PollDemo';
 import CanvasDemo from 'src/pages/CanvasDemo';
+import FetchTest from 'src/pages/FetchTest';
 import './style.scss';
 
 const App = () => {
@@ -35,6 +36,11 @@ const App = () => {
       key: 'canvas',
       label: 'Canvas 标注',
       content: <CanvasDemo />,
+    },
+    {
+      key: 'fetch',
+      label: 'Fetch 测试',
+      content: <FetchTest />,
     },
   ], []);
 
