@@ -9,11 +9,11 @@ export interface RequestConfig {
   method?: 'get' | 'post' | 'put' | 'delete' | 'patch';
   headers?: Record<string, string>;
   params?: Record<string, any>;
-  data?: any;
+  data?: any; // POST/PUT/PATCH 请求体数据
   timeout?: number;
-  withCredentials?: boolean;
+  withCredentials?: boolean; // 是否携带凭证（cookies）
   dataType?: 'json' | 'text' | 'arrayBuffer' | 'blob' | 'formData';
-  contentType?: string;
+  contentType?: string; // 请求体 Content-Type，优先级高于 headers 中的设置
   mode?: 'cors' | 'no-cors' | 'same-origin';
   cache?: boolean;
   cacheTimeout?: number;
@@ -251,8 +251,9 @@ async function fetcher<T = any>(config: RequestConfig): Promise<ResponseData<T>>
 
   // POST/PUT/PATCH 数据处理
   if (['post', 'put', 'patch'].includes(method) && data) {
+    options.headers = { ...headers };
     const finalContentType = contentType ||
-      headers['Content-Type'] ||
+      options.headers['Content-Type'] ||
       CONTENT_TYPE_FORM;
 
     options.headers['Content-Type'] = finalContentType;

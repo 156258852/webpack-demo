@@ -5,6 +5,19 @@ import { clearCache as internalClearCache } from './fetcher';
 // ============== 安全方法（支持缓存） ==============
 const SAFE_METHODS = ['get', 'query', 'list', 'describe', 'search', 'count', 'lookup'];
 
+// ============== HTTP 实例类型定义 ==============
+interface HttpInstance {
+  get<T = any>(url: string, params?: Record<string, any>, config?: Partial<RequestConfig>): Promise<T>;
+  post<T = any>(url: string, data?: any, config?: Partial<RequestConfig>): Promise<T>;
+  put<T = any>(url: string, data?: any, config?: Partial<RequestConfig>): Promise<T>;
+  delete<T = any>(url: string, params?: Record<string, any>, config?: Partial<RequestConfig>): Promise<T>;
+  initConfig: (config: Partial<RequestInstanceConfig>) => void;
+  useRequestInterceptor: (interceptor: RequestInterceptor) => void;
+  useResponseInterceptor: (interceptor: ResponseInterceptor) => void;
+  useErrorInterceptor: (errorInterceptor: ErrorInterceptor) => void;
+  clearCache: (key?: string) => void;
+}
+
 /**
  * 请求代理对象
  * 用法：
@@ -19,7 +32,7 @@ const httpProxy = new Proxy(request, {
     if (methodName === 'get') {
       return async <T = any>(url: string, params?: Record<string, any>, config?: Partial<RequestConfig>) => {
         const response = await target.get<T>(url, params, config);
-        return response;
+        return response.data;
       };
     }
 
@@ -27,7 +40,7 @@ const httpProxy = new Proxy(request, {
     if (methodName === 'post') {
       return async <T = any>(url: string, data?: any, config?: Partial<RequestConfig>) => {
         const response = await target.post<T>(url, data, config);
-        return response;
+        return response.data;
       };
     }
 
@@ -35,7 +48,7 @@ const httpProxy = new Proxy(request, {
     if (methodName === 'put') {
       return async <T = any>(url: string, data?: any, config?: Partial<RequestConfig>) => {
         const response = await target.put<T>(url, data, config);
-        return response;
+        return response.data;
       };
     }
 
@@ -43,14 +56,14 @@ const httpProxy = new Proxy(request, {
     if (methodName === 'delete') {
       return async <T = any>(url: string, params?: Record<string, any>, config?: Partial<RequestConfig>) => {
         const response = await target.delete<T>(url, params, config);
-        return response;
+        return response.data;
       };
     }
 
     // 透传其他方法
     return (target as any)[methodName];
   },
-});
+}) as unknown as HttpInstance;
 
 /**
  * 初始化全局配置
@@ -83,11 +96,11 @@ httpProxy.useErrorInterceptor = (errorInterceptor: ErrorInterceptor) => {
 /**
  * 清除缓存
  */
-httpProxy.clearCache = () => {
-  internalClearCache();
+httpProxy.clearCache = (key?: string) => {
+  internalClearCache(key);
 };
 
 // ============== 类型导出 ==============
-export type { RequestConfig, ResponseData } from './request';
+export type { RequestConfig, ResponseData, RequestInstanceConfig, RequestInterceptor, ResponseInterceptor, ErrorInterceptor } from './request';
 
 export default httpProxy;

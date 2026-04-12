@@ -1,5 +1,8 @@
 import fetcher, { RequestConfig, ResponseData, clearCache as clearFetcherCache } from './fetcher';
 
+// ============== 类型重导出 ==============
+export type { RequestConfig, ResponseData } from './fetcher';
+
 // ============== 类型定义 ==============
 export type RequestInterceptor = (config: RequestConfig) => RequestConfig | Promise<RequestConfig>;
 export type ResponseInterceptor<T = any> = (response: ResponseData<T>) => ResponseData<T> | Promise<ResponseData<T>>;
@@ -141,13 +144,6 @@ class Request {
    */
   useErrorInterceptor(interceptor: ErrorInterceptor): void {
     this.errorInterceptors.use(interceptor);
-  }
-
-  /**
-   * 清除缓存
-   */
-  clearCache(): void {
-    clearFetcherCache();
   }
 
   /**
