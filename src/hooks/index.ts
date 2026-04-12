@@ -6,6 +6,7 @@ import { useEvent, dispatch } from './useEvent';
 import usePoll from './usePoll';
 import useRequest from './useRequest';
 import useSet from './useSet';
+import { useLocalStorage, useSessionStorage } from './useStorage';
 
 export default {
   useWorker,
@@ -17,4 +18,6 @@ export default {
   usePoll,
   useRequest,
   useSet,
+  useLocalStorage,
+  useSessionStorage,
 };
