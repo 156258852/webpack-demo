@@ -4,6 +4,7 @@ import HighlightDemo from 'src/pages/HighlightDemo';
 import GuideDemo from 'src/pages/GuideDemo';
 import WorkerDemo from 'src/pages/WorkerDemo';
 import PollDemo from 'src/pages/PollDemo';
+import CanvasDemo from 'src/pages/CanvasDemo';
 import './style.scss';
 
 const App = () => {
@@ -29,6 +30,11 @@ const App = () => {
       key: 'poll',
       label: '轮询 Hook',
       content: <PollDemo />,
+    },
+    {
+      key: 'canvas',
+      label: 'Canvas 标注',
+      content: <CanvasDemo />,
     },
   ], []);
 
