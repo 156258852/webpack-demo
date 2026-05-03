@@ -1,0 +1,3 @@
+[submodule "submodule/study-demo"]
+	path = submodule/study-demo
+	url = git@gitee.com:wutongshuxiasuoqingqiu/study-demo.git
