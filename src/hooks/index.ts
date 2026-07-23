@@ -2,6 +2,7 @@ import useWorker from './useWorker';
 import useSyncLocalStorage from './useSyncLocalStorage';
 import useDynamicList from './useDynamicList';
 import useToggle from './useToggle';
+import useUpdate from './useUpdate';
 import { useEvent, dispatch } from './useEvent';
 import usePoll from './usePoll';
 import useRequest from './useRequest';
@@ -13,6 +14,7 @@ export default {
   useSyncLocalStorage,
   useDynamicList,
   useToggle,
+  useUpdate,
   useEvent,
   dispatch,
   usePoll,

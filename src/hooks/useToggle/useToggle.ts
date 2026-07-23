@@ -10,7 +10,9 @@ const toggleReducer = (
 function useToggle(
   initialValue: boolean
 ): [boolean, ToggleReturnType] {
-  return useReducer(toggleReducer, initialValue);
+  const [state, dispatch] = useReducer(toggleReducer, initialValue);
+  const toggle: ToggleReturnType = (nextValue?: boolean) => dispatch(nextValue);
+  return [state, toggle];
 }
 
 export default useToggle;
