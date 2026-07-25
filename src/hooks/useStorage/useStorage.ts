@@ -1,4 +1,5 @@
-import { useSyncExternalStore, useCallback, useRef } from 'react';
+import { useSyncExternalStore, useCallback } from 'react';
+import type { StorageSchema, StorageKey } from './storage-schema';
 
 // ==================== Types ====================
 
@@ -13,6 +14,11 @@ interface StorageConfig<T> {
 }
 
 type StorageSetValue<T> = T | null | ((prev: T | undefined) => T | null);
+
+type StorageReturn<T> = readonly [
+  T | undefined,
+  (value: StorageSetValue<T>) => void,
+];
 
 // ==================== Helpers ====================
 
@@ -29,32 +35,12 @@ const defaultSerializer = {
 
 // ==================== Core Hook ====================
 
-/**
- * 类型安全的 Storage Hook（基于 useSyncExternalStore）
- *
- * - 自动同步：同 tab 内多处使用同一 key，写入后自动同步
- * - 函数式更新：setValue(prev => next)
- * - 自定义序列化
- *
- * @example
- * ```ts
- * const [token, setToken] = useSessionStorage<string>('global__token', {
- *   defaultValue: '',
- * });
- *
- * setToken(prev => (prev ?? '') + '_refreshed');
- * setToken(null); // 删除该 key
- * ```
- */
 function useStorage<T>(
   key: string,
   config: StorageConfig<T> = {},
   storage: Storage
-) {
+): StorageReturn<T> {
   const { defaultValue, serializer = defaultSerializer } = config;
-
-  const serializerRef = useRef(serializer);
-  serializerRef.current = serializer;
 
   const subscribe = useCallback(
     (listener: () => void) => {
@@ -67,8 +53,8 @@ function useStorage<T>(
   const getSnapshot = useCallback((): T | undefined => {
     const raw = storage.getItem(key);
     if (raw === null) return defaultValue;
-    return serializerRef.current.deserialize(raw) as T;
-  }, [key, storage, defaultValue]);
+    return serializer.deserialize(raw) as T;
+  }, [key, storage, defaultValue, serializer]);
 
   const getServerSnapshot = useCallback((): T | undefined => {
     return defaultValue;
@@ -87,19 +73,19 @@ function useStorage<T>(
       if (next === null || next === undefined) {
         storage.removeItem(key);
       } else {
-        storage.setItem(key, serializerRef.current.serialize(next));
+        storage.setItem(key, serializer.serialize(next));
       }
 
       // 触发同 tab 内同步
       window.dispatchEvent(
         new StorageEvent('storage', {
           key,
-          newValue: next === null || next === undefined ? null : serializerRef.current.serialize(next),
+          newValue: next === null || next === undefined ? null : serializer.serialize(next),
           storageArea: storage,
         })
       );
     },
-    [key, storage, getSnapshot]
+    [key, storage, getSnapshot, serializer]
   );
 
   return [store, setValue] as const;
@@ -112,34 +98,50 @@ function useStorage<T>(
  *
  * @example
  * ```ts
- * const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('app__theme', {
- *   defaultValue: 'light',
- * });
+ * // Schema key → 类型自动推导
+ * const [token, setToken] = useLocalStorage('global__token');
+ * // token: string | undefined
+ *
+ * // 非 Schema key → 手动传泛型
+ * const [data, setData] = useLocalStorage<MyType>('some__key', { defaultValue: ... });
  * ```
  */
+export function useLocalStorage<K extends StorageKey>(
+  key: K,
+  config?: StorageConfig<StorageSchema[K]>
+): StorageReturn<StorageSchema[K]>;
 export function useLocalStorage<T>(
   key: string,
-  config: StorageConfig<T> = {}
-) {
-  return useStorage<T>(key, config, window.localStorage);
+  config?: StorageConfig<T>
+): StorageReturn<T>;
+export function useLocalStorage(key: string, config = {}) {
+  return useStorage(key, config as StorageConfig<unknown>, window.localStorage);
 }
 
 /**
- * sessionStorage hook（微前端场景建议配合 namespace 使用）
+ * sessionStorage hook
  *
  * @example
  * ```ts
- * const [filter, setFilter] = useSessionStorage<OrderFilter>('order__filter', {
- *   defaultValue: { status: 0, keyword: '' },
- * });
+ * // Schema key → 类型自动推导
+ * const [filter, setFilter] = useSessionStorage('order__filter');
+ * // filter: { status: number; keyword: string; dateRange: ... } | undefined
+ *
+ * setFilter(prev => ({ ...prev!, status: 1 }));
+ * setFilter(null); // 删除
  * ```
  */
+export function useSessionStorage<K extends StorageKey>(
+  key: K,
+  config?: StorageConfig<StorageSchema[K]>
+): StorageReturn<StorageSchema[K]>;
 export function useSessionStorage<T>(
   key: string,
-  config: StorageConfig<T> = {}
-) {
-  return useStorage<T>(key, config, window.sessionStorage);
+  config?: StorageConfig<T>
+): StorageReturn<T>;
+export function useSessionStorage(key: string, config = {}) {
+  return useStorage(key, config as StorageConfig<unknown>, window.sessionStorage);
 }
 
-export type { StorageConfig, StorageSetValue };
+export type { StorageConfig, StorageSetValue, StorageReturn };
 export default useStorage;
