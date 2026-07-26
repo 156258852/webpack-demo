@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
@@ -32,16 +33,27 @@ const createProgressPlugin = () => new WebpackBar({
 });
 
 /**
+ * 创建环境变量注入插件
+ * 将 .env 中的变量注入到浏览器代码中
+ * EnvironmentPlugin 是 DefinePlugin 的语法糖，等价于：
+ * new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) })
+ * @returns {webpack.EnvironmentPlugin} 环境变量插件实例
+ */
+const createEnvPlugin = () => new webpack.EnvironmentPlugin(["NODE_ENV", "PORT"]);
+
+/**
  * 获取基础插件列表
  * @returns {Array} 基础插件数组
  */
 const getBasePlugins = () => [
   createHtmlPlugin(),
   createProgressPlugin(),
+  createEnvPlugin(),
 ];
 
 module.exports = {
   createHtmlPlugin,
   createProgressPlugin,
+  createEnvPlugin,
   getBasePlugins,
 };

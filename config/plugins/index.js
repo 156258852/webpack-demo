@@ -9,7 +9,7 @@ const { getDevelopmentPlugins } = require("./development");
 const { getProductionPlugins } = require("./production");
 
 // 重新导出各模块的创建函数（向后兼容）
-const { createHtmlPlugin, createProgressPlugin } = require("./base");
+const { createHtmlPlugin, createProgressPlugin, createEnvPlugin } = require("./base");
 const { createCSSExtractPlugin } = require("./css");
 const { createReactRefreshPlugin, createDeadCodePlugin } = require("./development");
 const { createExternalsPlugin } = require("./production");
@@ -40,6 +40,7 @@ module.exports = {
   // 向后兼容的创建函数
   createHtmlPlugin,
   createProgressPlugin,
+  createEnvPlugin,
   createDeadCodePlugin,
   createCSSExtractPlugin,
   createReactRefreshPlugin,
