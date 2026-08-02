@@ -8,6 +8,7 @@ import usePoll from './usePoll';
 import useRequest from './useRequest';
 import useSet from './useSet';
 import { useLocalStorage, useSessionStorage } from './useStorage';
+import useModal from './useModal';
 
 export default {
   useWorker,
@@ -22,4 +23,5 @@ export default {
   useSet,
   useLocalStorage,
   useSessionStorage,
+  useModal,
 };

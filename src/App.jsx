@@ -6,6 +6,7 @@ import WorkerDemo from 'src/pages/WorkerDemo';
 import PollDemo from 'src/pages/PollDemo';
 import CanvasDemo from 'src/pages/CanvasDemo';
 import FetchTest from 'src/pages/FetchTest';
+import ModalDemo from 'src/pages/ModalDemo';
 import './style.scss';
 
 const App = () => {
@@ -41,6 +42,11 @@ const App = () => {
       key: 'fetch',
       label: 'Fetch 测试',
       content: <FetchTest />,
+    },
+    {
+      key: 'modal',
+      label: 'Modal Hook',
+      content: <ModalDemo />,
     },
   ], []);
 
