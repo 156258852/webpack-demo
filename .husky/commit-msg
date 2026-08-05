@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# commit-msg hook
+# If the current branch name contains an "AIAP-<digits>" ticket number
+# (case-insensitive prefix), prepend it to the commit message — unless the
+# message already mentions any AIAP-<digits> ticket (not necessarily the
+# same number as the branch).
+
+commit_msg_file="$1"
+
+# Current branch name (empty when in detached HEAD).
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+if [ -z "$branch" ]; then
+  exit 0
+fi
+
+# Extract the first AIAP-<digits> match from the branch name and normalize
+# it to uppercase. The branch is lowercased first so the grep pattern can
+# be lowercase — case is handled by normalization, not the -i flag. tr then
+# uppercases the prefix so the prepended ticket is always "AIAP-<digits>".
+# head keeps the first match only; the pipeline exits 0 even when grep finds
+# nothing, so it is safe under "set -e".
+jira_ref=$(printf '%s\n' "$branch" | tr '[:upper:]' '[:lower:]' | grep -oE 'aiap-[0-9]+' | head -n 1 | tr '[:lower:]' '[:upper:]')
+
+# No AIAP ticket in the branch name — nothing to do.
+if [ -z "$jira_ref" ]; then
+  exit 0
+fi
+
+# Read the proposed commit message.
+commit_msg=$(cat "$commit_msg_file")
+
+# Skip if the commit message already mentions any AIAP-<digits> ticket — it
+# does not need to be the same number as the branch. The message is
+# lowercased first so the grep pattern can be lowercase (case handled by
+# normalization, not the -i flag). (Conditions are exempt from "set -e".)
+if printf '%s\n' "$commit_msg" | tr '[:upper:]' '[:lower:]' | grep -qE 'aiap-[0-9]+'; then
+  exit 0
+fi
+
+# Prepend the ticket number to the first line of the commit message.
+printf '%s %s\n' "$jira_ref" "$commit_msg" > "$commit_msg_file"
+
+printf '[commit-msg] Prepended "%s" to the commit message (from branch "%s")\n' \
+  "$jira_ref" "$branch"
