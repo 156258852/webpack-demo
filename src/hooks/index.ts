@@ -9,6 +9,7 @@ import useRequest from './useRequest';
 import useSet from './useSet';
 import { useLocalStorage, useSessionStorage } from './useStorage';
 import useModal from './useModal';
+import usePromiseModal from './usePromiseModal';
 
 export default {
   useWorker,
@@ -24,4 +25,5 @@ export default {
   useLocalStorage,
   useSessionStorage,
   useModal,
+  usePromiseModal,
 };
