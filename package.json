@@ -18,7 +18,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^6.3.2",
     "@babel/runtime-corejs3": "^7.27.0",
+    "antd": "^5.29.3",
     "axios": "^1.12.2",
     "lhy-map-hooks": "^0.0.2",
     "lodash-es": "^4.17.21",

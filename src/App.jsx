@@ -7,6 +7,7 @@ import PollDemo from 'src/pages/PollDemo';
 import CanvasDemo from 'src/pages/CanvasDemo';
 import FetchTest from 'src/pages/FetchTest';
 import ModalDemo from 'src/pages/ModalDemo';
+import YdImageDemo from 'src/pages/YdImageDemo';
 import './style.scss';
 
 const App = () => {
@@ -47,6 +48,11 @@ const App = () => {
       key: 'modal',
       label: 'Modal Hook',
       content: <ModalDemo />,
+    },
+    {
+      key: 'yd-image',
+      label: '截图标注',
+      content: <YdImageDemo />,
     },
   ], []);
 

@@ -1,0 +1,30 @@
+.yd-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99999998;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  cursor: crosshair;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.yd-selection-box {
+  position: absolute;
+  z-index: 99999997;
+  border: 1px dashed gray;
+  background-color: rgb(0 0 0 / 10%);
+}
+
+.yd-image-canvas {
+  &.text {
+    &:hover {
+      cursor: text;
+    }
+  }
+}

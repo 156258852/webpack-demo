@@ -1,0 +1,127 @@
+.yd-image-toolbar-container {
+  position: absolute;
+  z-index: 99999999;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+
+  .yd-image-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .yd-image-toolbar-item {
+      padding: 0;
+      margin: 0 4px;
+
+      &.edit {
+        &.selected {
+          color: #007efd;
+          border-radius: 4px;
+          background-color: #ccc;
+        }
+      }
+
+      &.mosaic {
+        display: grid;
+        grid-template-columns: repeat(2, 6px);
+        grid-template-rows: repeat(2, 6px);
+        border: 1px solid #555555;
+        gap: 1px;
+        padding: 1px;
+        background-color: #f0f0f0;
+        margin: 0 8px;
+
+        &.cell {
+          width: 6px;
+          height: 6px;
+        }
+    
+        /* 根据需要为每个单元格设置不同的背景颜色 */
+        .cell:nth-child(1) { background: #555555; }
+        .cell:nth-child(2) { background: #CBCBCB; }
+        .cell:nth-child(3) { background: #CBCBCB; }
+        .cell:nth-child(4) { background: #555555; }
+
+        &:hover {
+          background-color: #007efd;
+          cursor: pointer;
+        }
+      }
+
+      &:hover {
+        color: #007efd;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.yd-image-toolconfig-container {
+  position: absolute;
+  z-index: 99999999;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #ccc;
+
+  .yd-image-toolconfig {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .yd-image-toolconfig-item {
+      &.size {
+        margin: 6px;
+        border-radius: 50%;
+        background-color: gray;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #007efd;
+        }
+
+        &.selected {
+          background-color: #007efd;
+        }
+      }
+
+      &.color {
+        position: relative;
+        width: 16px;
+        height: 16px;
+        margin: 4px;
+        border: 2px solid #fff;
+        border-radius: 4px;
+
+        &.hover::after,
+        &.selected::after {
+          position: absolute; /* 绝对定位 */
+          right: -5px;
+          bottom: -5px; /* 放在容器的右下角 */
+          z-index: 1; // 确保伪元素在顶层显示
+          width: 10px; /* 圆形的大小 */
+          height: 10px;
+          border: 1px solid white; /* 白色边框 */
+          color: white; /* 白色对勾 */
+          font-size: 6px; /* 对勾的大小 */
+          line-height: 10px; /* 对勾垂直居中 */
+          text-align: center; /* 对勾水平居中 */
+          border-radius: 50%; /* 圆形 */
+          background-color: green; /* 绿色背景 */
+          content: "\2713"; /* Unicode 对勾符号 */
+        }
+      }
+    }
+  }
+}
+
+.yd-image-canvas-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
