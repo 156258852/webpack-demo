@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import http from 'src/utils/http';
+import http from 'src/http/http';
 
 // 初始化配置
 http.initConfig({
